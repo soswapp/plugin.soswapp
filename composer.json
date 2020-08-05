@@ -1,0 +1,27 @@
+{
+    "name": "soswapp/plugin.soswapp",
+    "description": "7 OS Web - Plugin resource",
+    "keywords": ["css", "javascript","7","seven","os","web","plugin"],
+    "homepage": "https://github.com/soswapp/plugin.soswapp",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ikechukwu Okalia",
+            "email": "dev@ikechukwuokalia.com"
+        },
+        {
+            "name": "Tym Frontiers Ltd.",
+            "email": "dev@tymfrontiers.com"
+        }
+    ],
+    "require": {
+      "soswapp/jquery.soswapp" : ">=0.1@stable",
+      "soswapp/theme.soswapp" : ">=0.1@stable",
+      "soswapp/js-generic.soswapp" : ">=0.1@stable"
+    },
+    "require-dev": {},
+    "autoload": {
+        "psr-4": {}
+    }
+}
