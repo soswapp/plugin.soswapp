@@ -238,10 +238,12 @@ sos.form = {
     return endpoint;
   },
   files : {},
+  fileHash : {},
   remFile : function (fid) {
     if (fid && sos.form.files[fid] !== "undefined") {
       if (delete sos.form.files[fid]) {
         $(document).find(`li#${fid}`).remove();
+        delete sos.form.fileHash[fid];
       }
     }
   },
@@ -362,15 +364,26 @@ sos.form.initFile = function (fileInput, statBar) {
   let fileProps = [];
   if( fileInput.files.length > 0 ){
     let fileInputs = fileInput.files;
-    for(i = 0; i < fileInputs.length; ++ i){
-      let fname = sos.randCode(12);
-      sos.form.files[fname] = fileInputs[i];
-      fileProps.push({
-        id : fname,
-        name : fileInputs[i].name,
-        size : fileInputs[i].size,
-        type : fileInputs[i].type
-      });
+    for(let i = 0; i < fileInputs.length; i++){
+      // get file id and make sure it is not already existing
+      let hash,
+          hashString = i;
+      hashString += fileInputs[i].name;
+      hashString += fileInputs[i].size;
+      hashString += fileInputs[i].type;
+      hash = hashString.hashCode();
+      if (!in_array(hash, Object.values(sos.form.fileHash))) {
+        let fname = sos.randCode(12);
+        sos.form.fileHash[fname] = hash;
+        sos.form.files[fname] = fileInputs[i];
+        fileProps.push({
+          id : fname,
+          hash : hash,
+          name : fileInputs[i].name,
+          size : fileInputs[i].size,
+          type : fileInputs[i].type
+        });
+      };
     }
   }
   // create upload stats
@@ -416,6 +429,7 @@ sos.form.initFile = function (fileInput, statBar) {
 sos.form.resetFiles = () => {
   if (Object.keys(sos.form.files).length > 0) {
     sos.form.files = {};
+    sos.form.fileHash = {};
   }
 }
 sos.form.uploadProgress = function (id, upl) {
